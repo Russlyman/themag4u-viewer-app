@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Button from './Button';
+import FooterButton from './FooterButton';
 import { router } from 'expo-router';
 
 const Footer: React.FC = props => {
@@ -19,15 +19,15 @@ const Footer: React.FC = props => {
         backgroundColor: '#212529',
       }}
     >
-      <Button
+      <FooterButton
         icon="arrow-back"
         size={64}
       />
-      <Button
+      <FooterButton
         icon="arrow-forward"
         size={64}
       />
-      <Button
+      <FooterButton
         icon="settings-sharp"
         size={64}
         onPress={() => router.navigate('/settings')}

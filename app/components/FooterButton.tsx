@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-const Button: React.FC<{
+const FooterButton: React.FC<{
   icon: keyof typeof Ionicons.glyphMap;
   size: number;
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
@@ -39,4 +39,4 @@ const Button: React.FC<{
   );
 };
 
-export default Button;
+export default FooterButton;
