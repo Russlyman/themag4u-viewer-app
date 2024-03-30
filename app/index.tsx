@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Footer from './components/Footer';
+import Footer from '../components/Footer';
 
 const Index = () => {
   const insets = useSafeAreaInsets();

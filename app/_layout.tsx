@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Header from './components/Header';
+import Header from '../components/Header';
 import { SplashScreen } from 'expo-router';
 import { useEffect } from 'react';
 import {
