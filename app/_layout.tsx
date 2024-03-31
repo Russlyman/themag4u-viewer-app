@@ -8,6 +8,7 @@ import {
   Inter_600SemiBold,
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
+import { StatusBar } from 'expo-status-bar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,6 +32,10 @@ export default function Layout() {
 
   return (
     <SafeAreaProvider>
+      <StatusBar
+        style="dark"
+        animated={true}
+      />
       <Stack
         screenOptions={{
           header: Header,
