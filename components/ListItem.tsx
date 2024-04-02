@@ -1,10 +1,10 @@
 import { GestureResponderEvent, Pressable, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 
 const ListItem: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
   label: string;
+  children?: React.ReactNode;
 }> = props => {
   const [depressed, setDepressed] = useState(false);
 
@@ -35,29 +35,7 @@ const ListItem: React.FC<{
       >
         {props.label}
       </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          columnGap: 8,
-        }}
-      >
-        <Text
-          style={{
-            color: '#ADB5BD',
-            fontFamily: 'Inter_600SemiBold',
-            fontSize: 16,
-          }}
-        >
-          Coventry West
-        </Text>
-        <Ionicons
-          name="chevron-forward"
-          size={16}
-          color="#ADB5BD"
-        />
-      </View>
+      {props.children}
     </Pressable>
   );
 };

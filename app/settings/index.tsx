@@ -1,11 +1,11 @@
 import { View } from 'react-native';
-import ListItem from '../../components/ListItem';
+import ListDrillIn from '../../components/ListDrillIn';
 
 const SettingsIndex = () => {
   return (
     <View style={{ paddingHorizontal: 24, paddingTop: 24 }}>
-      <ListItem label="Area" />
-      <ListItem label="Issue" />
+      <ListDrillIn label="Area" />
+      <ListDrillIn label="Issue" />
     </View>
   );
 };
