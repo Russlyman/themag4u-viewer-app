@@ -12,9 +12,17 @@ const ListItem: React.FC<{
     <Pressable
       onPress={props.onPress}
       onPressIn={() => {
+        if (!props.onPress) {
+          return;
+        }
+
         setDepressed(true);
       }}
       onPressOut={() => {
+        if (!props.onPress) {
+          return;
+        }
+
         setDepressed(false);
       }}
       style={{

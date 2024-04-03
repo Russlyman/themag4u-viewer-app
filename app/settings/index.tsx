@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 import ListDrillIn from '../../components/ListDrillIn';
 import { router } from 'expo-router';
+import ListToggle from '../../components/ListToggle';
 
 const SettingsIndex = () => {
   return (
@@ -9,6 +10,7 @@ const SettingsIndex = () => {
         label="Issue"
         onPress={() => router.navigate('/issue')}
       />
+      <ListToggle label="Toggle" />
     </View>
   );
 };
