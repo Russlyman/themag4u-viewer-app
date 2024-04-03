@@ -10,6 +10,7 @@ const ListItem: React.FC<{
 
   return (
     <Pressable
+      onPress={props.onPress}
       onPressIn={() => {
         setDepressed(true);
       }}
