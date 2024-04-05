@@ -16,7 +16,7 @@ const Header: React.FC<NativeStackHeaderProps> = props => {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#212529',
+        backgroundColor: Colours.primary,
       }}
     >
       {props.back && (
