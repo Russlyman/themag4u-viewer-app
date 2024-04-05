@@ -23,13 +23,13 @@ type ListSelectItemData = {
 
 const IssueIndex = () => {
   const DATA: ListSelectItemData[] = [
+    { id: '0', label: 'February 2024' },
     { id: '1', label: 'February 2024' },
     { id: '2', label: 'February 2024' },
     { id: '3', label: 'February 2024' },
-    { id: '4', label: 'February 2024' },
   ];
 
-  const [selectedId, setSelectedId] = useState<string>();
+  const [selectedId, setSelectedId] = useState<string>('0');
 
   const renderItem = ({ item }: { item: ListSelectItemData }) => {
     return (
