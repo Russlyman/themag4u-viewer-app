@@ -1,58 +1,55 @@
-import { ScrollView, Text, View } from 'react-native';
-import ListSelect from '../../components/ListSelect';
+import { FlatList, ScrollView, Text, View } from 'react-native';
+import ListSelectItem from '../../components/ListSelectItem';
 import { useState } from 'react';
 
+{
+  /* <Text
+  style={{
+    paddingLeft: 16,
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 11.11,
+    lineHeight: 11.11 + 11.11 * 0.4,
+  }}
+>
+  Selecting Latest will show the most recent issue of TheMag4U or older issues
+  can be selected.
+</Text>; */
+}
+
+type ListSelectItemData = {
+  id: string;
+  label: string;
+};
+
 const IssueIndex = () => {
-  const [issueId, setIssueId] = useState(0);
-  const handleSelect = (id: number) => {
-    setIssueId(id);
+  const DATA: ListSelectItemData[] = [
+    { id: '1', label: 'February 2024' },
+    { id: '2', label: 'February 2024' },
+    { id: '3', label: 'February 2024' },
+    { id: '4', label: 'February 2024' },
+  ];
+
+  const [selectedId, setSelectedId] = useState<string>();
+
+  const renderItem = ({ item }: { item: ListSelectItemData }) => {
+    return (
+      <ListSelectItem
+        label={item.label}
+        isSelected={item.id === selectedId}
+        onPress={() => setSelectedId(item.id)}
+      />
+    );
   };
 
   return (
-    <ScrollView
+    <FlatList
+      contentContainerStyle={{ padding: 24, rowGap: 1 }}
       alwaysBounceVertical={false}
-      contentContainerStyle={{ padding: 24, rowGap: 32 }}
-    >
-      <View style={{ rowGap: 8 }}>
-        <ListSelect
-          id={-1}
-          label="Latest - February 2024"
-          onSelect={handleSelect}
-          currentSelection={issueId}
-        />
-        <Text
-          style={{
-            paddingLeft: 16,
-            fontFamily: 'Inter_600SemiBold',
-            fontSize: 11.11,
-            lineHeight: 11.11 + 11.11 * 0.4,
-          }}
-        >
-          Selecting Latest will show the most recent issue of TheMag4U or older
-          issues can be selected.
-        </Text>
-      </View>
-      <View style={{ rowGap: 1 }}>
-        <ListSelect
-          id={0}
-          label="January 2024"
-          onSelect={handleSelect}
-          currentSelection={issueId}
-        />
-        <ListSelect
-          id={1}
-          label="December 2023"
-          onSelect={handleSelect}
-          currentSelection={issueId}
-        />
-        <ListSelect
-          id={2}
-          label="November 2023"
-          onSelect={handleSelect}
-          currentSelection={issueId}
-        />
-      </View>
-    </ScrollView>
+      data={DATA}
+      renderItem={renderItem}
+      keyExtractor={item => item.id}
+      extraData={selectedId}
+    />
   );
 };
 
