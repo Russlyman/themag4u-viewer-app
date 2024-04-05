@@ -2,43 +2,56 @@ import { FlatList, ScrollView, Text, View } from 'react-native';
 import ListSelectItem from '../../components/ListSelectItem';
 import { useState } from 'react';
 
-{
-  /* <Text
-  style={{
-    paddingLeft: 16,
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 11.11,
-    lineHeight: 11.11 + 11.11 * 0.4,
-  }}
->
-  Selecting Latest will show the most recent issue of TheMag4U or older issues
-  can be selected.
-</Text>; */
-}
-
 type ListSelectItemData = {
   id: string;
-  label: string;
+  name: string;
 };
 
 const IssueIndex = () => {
   const DATA: ListSelectItemData[] = [
-    { id: '0', label: 'February 2024' },
-    { id: '1', label: 'February 2024' },
-    { id: '2', label: 'February 2024' },
-    { id: '3', label: 'February 2024' },
+    { id: '0', name: 'February 2024' },
+    { id: '1', name: 'February 2024' },
+    { id: '2', name: 'February 2024' },
+    { id: '3', name: 'February 2024' },
   ];
 
   const [selectedId, setSelectedId] = useState<string>('0');
 
-  const renderItem = ({ item }: { item: ListSelectItemData }) => {
-    return (
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: ListSelectItemData;
+    index: number;
+  }) => {
+    const component = (
       <ListSelectItem
-        label={item.label}
+        label={item.name}
         isSelected={item.id === selectedId}
         onPress={() => setSelectedId(item.id)}
       />
     );
+
+    if (index === 0) {
+      return (
+        <View style={{ rowGap: 8, paddingBottom: 31 }}>
+          {component}
+          <Text
+            style={{
+              paddingLeft: 16,
+              fontFamily: 'Inter_600SemiBold',
+              fontSize: 11.11,
+              lineHeight: 11.11 + 11.11 * 0.4,
+            }}
+          >
+            Selecting Latest will show the most recent issue of TheMag4U or
+            older issues can be selected.
+          </Text>
+        </View>
+      );
+    }
+
+    return component;
   };
 
   return (
