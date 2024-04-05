@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React from 'react';
 import Button from './FooterButton';
+import Colours from '../constants/Colours';
 
 const Header: React.FC<NativeStackHeaderProps> = props => {
   const insets = useSafeAreaInsets();
@@ -33,7 +34,7 @@ const Header: React.FC<NativeStackHeaderProps> = props => {
       )}
       <Text
         style={{
-          color: '#F8F9FA',
+          color: Colours.secondary,
           fontFamily: 'Inter_700Bold',
           fontSize: 23.04,
         }}

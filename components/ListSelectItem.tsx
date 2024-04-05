@@ -1,6 +1,7 @@
 import { GestureResponderEvent } from 'react-native';
 import ListItem from './ListItem';
 import { Ionicons } from '@expo/vector-icons';
+import Colours from '../constants/Colours';
 
 const ListSelectItem: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
@@ -13,7 +14,7 @@ const ListSelectItem: React.FC<{
         <Ionicons
           name="checkmark"
           size={32}
-          color="#212529"
+          color={Colours.primary}
         />
       )}
     </ListItem>

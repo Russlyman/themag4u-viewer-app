@@ -7,6 +7,7 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
+import Colours from '../constants/Colours';
 
 const FooterButton: React.FC<{
   icon: keyof typeof Ionicons.glyphMap;
@@ -33,7 +34,7 @@ const FooterButton: React.FC<{
       <Ionicons
         name={props.icon}
         size={props.size}
-        color={depressed ? '#C6C7C8' : '#F8F9FA'}
+        color={depressed ? Colours.controlLightDepressed : Colours.secondary}
       />
     </Pressable>
   );

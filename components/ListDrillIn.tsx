@@ -1,6 +1,7 @@
 import ListItem from './ListItem';
 import { GestureResponderEvent, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Colours from '../constants/Colours';
 
 const ListDrillIn: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
@@ -18,7 +19,7 @@ const ListDrillIn: React.FC<{
       >
         <Text
           style={{
-            color: '#ADB5BD',
+            color: Colours.controlCurrentValue,
             fontFamily: 'Inter_600SemiBold',
             fontSize: 16,
           }}
@@ -28,7 +29,7 @@ const ListDrillIn: React.FC<{
         <Ionicons
           name="chevron-forward"
           size={16}
-          color="#ADB5BD"
+          color={Colours.controlCurrentValue}
         />
       </View>
     </ListItem>

@@ -9,6 +9,7 @@ import {
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
 import { StatusBar } from 'expo-status-bar';
+import Colours from '../constants/Colours';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,7 +40,7 @@ export default function Layout() {
       <Stack
         screenOptions={{
           header: Header,
-          contentStyle: { backgroundColor: '#E9ECEF' },
+          contentStyle: { backgroundColor: Colours.background },
         }}
       />
     </SafeAreaProvider>

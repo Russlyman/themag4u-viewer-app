@@ -1,3 +1,4 @@
+import Colours from '../constants/Colours';
 import ListItem from './ListItem';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -18,7 +19,7 @@ const ListSelect: React.FC<{
         <Ionicons
           name="checkmark"
           size={32}
-          color="#212529"
+          color={Colours.primary}
         />
       )}
     </ListItem>

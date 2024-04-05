@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FooterButton from './FooterButton';
 import { router } from 'expo-router';
+import Colours from '../constants/Colours';
 
 const Footer: React.FC = props => {
   const insets = useSafeAreaInsets();
@@ -16,7 +17,7 @@ const Footer: React.FC = props => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#212529',
+        backgroundColor: Colours.primary,
       }}
     >
       <FooterButton

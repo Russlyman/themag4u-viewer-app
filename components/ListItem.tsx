@@ -1,5 +1,6 @@
 import { GestureResponderEvent, Pressable, Text, View } from 'react-native';
 import { useState } from 'react';
+import Colours from '../constants/Colours';
 
 const ListItem: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
@@ -32,12 +33,14 @@ const ListItem: React.FC<{
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: depressed ? '#C6C7C8' : '#F8F9FA',
+        backgroundColor: depressed
+          ? Colours.controlLightDepressed
+          : Colours.secondary,
       }}
     >
       <Text
         style={{
-          color: '#212529',
+          color: Colours.primary,
           fontFamily: 'Inter_600SemiBold',
           fontSize: 16,
         }}

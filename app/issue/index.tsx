@@ -1,6 +1,7 @@
 import { FlatList, ScrollView, Text, View } from 'react-native';
 import ListSelectItem from '../../components/ListSelectItem';
 import { useState } from 'react';
+import Colours from '../../constants/Colours';
 
 type ListSelectItemData = {
   id: string;
@@ -38,6 +39,7 @@ const IssueIndex = () => {
           {component}
           <Text
             style={{
+              color: Colours.primary,
               paddingLeft: 16,
               fontFamily: 'Inter_600SemiBold',
               fontSize: 11.11,

@@ -1,6 +1,7 @@
 import { Switch } from 'react-native';
 import ListItem from './ListItem';
 import { useState } from 'react';
+import Colours from '../constants/Colours';
 
 const ListToggle: React.FC<{
   label: string;
@@ -11,9 +12,9 @@ const ListToggle: React.FC<{
   return (
     <ListItem {...props}>
       <Switch
-        thumbColor="#F8F9FA"
-        trackColor={{ false: '#E9ECEF', true: '#74C0FC' }}
-        ios_backgroundColor="#E9ECEF"
+        thumbColor={Colours.secondary}
+        trackColor={{ false: Colours.background, true: Colours.toggle }}
+        ios_backgroundColor={Colours.background}
         onValueChange={toggleSwitch}
         value={isEnabled}
       />
