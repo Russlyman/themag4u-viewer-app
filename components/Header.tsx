@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React from 'react';
@@ -10,39 +10,45 @@ const Header: React.FC<NativeStackHeaderProps> = props => {
 
   return (
     <View
-      style={{
-        height: 72 + insets.top,
-        paddingTop: insets.top,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: Colours.primary,
-      }}
+      style={[
+        {
+          height: 72 + insets.top,
+          paddingTop: insets.top,
+        },
+        styles.headerContainer,
+      ]}
     >
       {props.back && (
         <Button
           icon="chevron-back"
           size={48}
           onPress={props.navigation.goBack}
-          style={{
-            position: 'absolute',
-            left: 4,
-            bottom: 72 / 2,
-            transform: [{ translateY: 24 }],
-          }}
+          style={styles.backButton}
         />
       )}
-      <Text
-        style={{
-          color: Colours.secondary,
-          fontFamily: 'Inter_700Bold',
-          fontSize: 23.04,
-        }}
-      >
-        {props.options.title}
-      </Text>
+      <Text style={styles.headerTitle}>{props.options.title}</Text>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colours.primary,
+  },
+  backButton: {
+    position: 'absolute',
+    left: 4,
+    bottom: 72 / 2,
+    transform: [{ translateY: 24 }],
+  },
+  headerTitle: {
+    color: Colours.secondary,
+    fontFamily: 'Inter_700Bold',
+    fontSize: 23.04,
+  },
+});
 
 export default Header;

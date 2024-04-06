@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FooterButton from './FooterButton';
 import { router } from 'expo-router';
@@ -10,15 +10,13 @@ const Footer: React.FC = props => {
 
   return (
     <View
-      style={{
-        height: 104 + insets.bottom,
-        paddingBottom: insets.bottom,
-        paddingHorizontal: 24,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: Colours.primary,
-      }}
+      style={[
+        {
+          height: 104 + insets.bottom,
+          paddingBottom: insets.bottom,
+        },
+        styles.footerContainer,
+      ]}
     >
       <FooterButton
         icon="arrow-back"
@@ -36,5 +34,15 @@ const Footer: React.FC = props => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  footerContainer: {
+    paddingHorizontal: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: Colours.primary,
+  },
+});
 
 export default Footer;

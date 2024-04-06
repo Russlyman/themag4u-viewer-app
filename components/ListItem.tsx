@@ -1,4 +1,10 @@
-import { GestureResponderEvent, Pressable, Text, View } from 'react-native';
+import {
+  GestureResponderEvent,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useState } from 'react';
 import Colours from '../constants/Colours';
 
@@ -26,30 +32,35 @@ const ListItem: React.FC<{
 
         setDepressed(false);
       }}
-      style={{
-        height: 48,
-        paddingHorizontal: 16,
-        borderRadius: 8,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: depressed
-          ? Colours.controlLightDepressed
-          : Colours.secondary,
-      }}
+      style={[
+        {
+          backgroundColor: depressed
+            ? Colours.controlLightDepressed
+            : Colours.secondary,
+        },
+        styles.listItemContainer,
+      ]}
     >
-      <Text
-        style={{
-          color: Colours.primary,
-          fontFamily: 'Inter_600SemiBold',
-          fontSize: 16,
-        }}
-      >
-        {props.label}
-      </Text>
+      <Text style={styles.labelText}>{props.label}</Text>
       {props.children}
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  listItemContainer: {
+    height: 48,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  labelText: {
+    color: Colours.primary,
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 16,
+  },
+});
 
 export default ListItem;
