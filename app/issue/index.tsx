@@ -14,13 +14,6 @@ const IssueIndex = () => {
     { id: '0', name: 'February 2024' },
     { id: '1', name: 'February 2024' },
     { id: '2', name: 'February 2024' },
-    { id: '3', name: 'February 2024' },
-    { id: '4', name: 'February 2024' },
-    { id: '5', name: 'February 2024' },
-    { id: '6', name: 'February 2024' },
-    { id: '7', name: 'February 2024' },
-    { id: '8', name: 'February 2024' },
-    { id: '9', name: 'February 2024' },
   ];
 
   const issueListLength = DATA.length;

@@ -2,10 +2,12 @@ import ListItem from './ListItem';
 import { GestureResponderEvent, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colours from '../styles/Colours';
+import { Rounding } from './ListItem';
 
 const ListDrillIn: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
   label: string;
+  rounding?: Rounding;
 }> = props => {
   return (
     <ListItem {...props}>
