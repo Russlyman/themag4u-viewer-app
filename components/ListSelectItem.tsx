@@ -1,5 +1,5 @@
 import { GestureResponderEvent } from 'react-native';
-import ListItem from './ListItem';
+import ListItem, { Rounding } from './ListItem';
 import { Ionicons } from '@expo/vector-icons';
 import Colours from '../styles/Colours';
 
@@ -7,6 +7,7 @@ const ListSelectItem: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
   label: string;
   isSelected: boolean;
+  rounding?: Rounding;
 }> = props => {
   return (
     <ListItem {...props}>

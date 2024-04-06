@@ -12,6 +12,7 @@ const ListItem: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
   label: string;
   children?: React.ReactNode;
+  rounding?: Rounding;
 }> = props => {
   const [depressed, setDepressed] = useState(false);
 
@@ -39,6 +40,9 @@ const ListItem: React.FC<{
             : Colours.secondary,
         },
         styles.listItemContainer,
+        props.rounding === Rounding.Top && styles.roundingTop,
+        props.rounding === Rounding.Bottom && styles.roundingBottom,
+        props.rounding === undefined && styles.roundingAll,
       ]}
     >
       <Text style={styles.labelText}>{props.label}</Text>
@@ -48,10 +52,20 @@ const ListItem: React.FC<{
 };
 
 const styles = StyleSheet.create({
+  roundingAll: {
+    borderRadius: 8,
+  },
+  roundingTop: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  roundingBottom: {
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+  },
   listItemContainer: {
     height: 48,
     paddingHorizontal: 16,
-    borderRadius: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -63,5 +77,11 @@ const styles = StyleSheet.create({
     lineHeight: 16 + 16 * 0.6,
   },
 });
+
+export enum Rounding {
+  Top,
+  Bottom,
+  None,
+}
 
 export default ListItem;

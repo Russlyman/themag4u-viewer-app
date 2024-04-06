@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ListSelectItem from '../../components/ListSelectItem';
 import { useState } from 'react';
 import Colours from '../../styles/Colours';
+import { Rounding } from '../../components/ListItem';
 
 type ListSelectItemData = {
   id: string;
@@ -14,7 +15,15 @@ const IssueIndex = () => {
     { id: '1', name: 'February 2024' },
     { id: '2', name: 'February 2024' },
     { id: '3', name: 'February 2024' },
+    { id: '4', name: 'February 2024' },
+    { id: '5', name: 'February 2024' },
+    { id: '6', name: 'February 2024' },
+    { id: '7', name: 'February 2024' },
+    { id: '8', name: 'February 2024' },
+    { id: '9', name: 'February 2024' },
   ];
+
+  const issueListLength = DATA.length;
 
   const [selectedId, setSelectedId] = useState<string>('0');
 
@@ -25,11 +34,29 @@ const IssueIndex = () => {
     item: ListSelectItemData;
     index: number;
   }) => {
+    let rounding: Rounding | undefined;
+
+    if (index !== 0 && issueListLength > 2) {
+      // First Item
+      if (index === 1) {
+        rounding = Rounding.Top;
+      }
+      // Last Item
+      else if (index === issueListLength - 1) {
+        rounding = Rounding.Bottom;
+      }
+      // Middle Items
+      else {
+        rounding = Rounding.None;
+      }
+    }
+
     const component = (
       <ListSelectItem
         label={item.name}
         isSelected={item.id === selectedId}
         onPress={() => setSelectedId(item.id)}
+        rounding={rounding}
       />
     );
 
