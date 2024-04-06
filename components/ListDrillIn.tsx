@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     color: Colours.controlCurrentValue,
     fontFamily: 'Inter_600SemiBold',
     fontSize: 16,
+    lineHeight: 16 + 16 * 0.6,
   },
   currentValueContainer: {
     flexDirection: 'row',

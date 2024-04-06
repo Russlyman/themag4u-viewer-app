@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     color: Colours.secondary,
     fontFamily: 'Inter_700Bold',
     fontSize: 23.04,
+    lineHeight: 23.04 + 23.04 * 0.15,
   },
 });
 
