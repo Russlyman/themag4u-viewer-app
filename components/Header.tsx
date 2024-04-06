@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React from 'react';
 import Button from './FooterButton';
-import Colours from '../constants/Colours';
+import Colours from '../styles/Colours';
 
 const Header: React.FC<NativeStackHeaderProps> = props => {
   const insets = useSafeAreaInsets();

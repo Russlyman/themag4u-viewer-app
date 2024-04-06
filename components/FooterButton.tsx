@@ -7,7 +7,7 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import Colours from '../constants/Colours';
+import Colours from '../styles/Colours';
 
 const FooterButton: React.FC<{
   icon: keyof typeof Ionicons.glyphMap;

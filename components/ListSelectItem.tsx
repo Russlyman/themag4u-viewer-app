@@ -1,7 +1,7 @@
 import { GestureResponderEvent } from 'react-native';
 import ListItem from './ListItem';
 import { Ionicons } from '@expo/vector-icons';
-import Colours from '../constants/Colours';
+import Colours from '../styles/Colours';
 
 const ListSelectItem: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;

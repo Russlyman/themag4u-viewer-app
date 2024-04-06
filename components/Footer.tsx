@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FooterButton from './FooterButton';
 import { router } from 'expo-router';
-import Colours from '../constants/Colours';
+import Colours from '../styles/Colours';
 
 const Footer: React.FC = props => {
   const insets = useSafeAreaInsets();

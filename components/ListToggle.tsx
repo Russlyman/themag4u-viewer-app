@@ -1,7 +1,7 @@
 import { Switch } from 'react-native';
 import ListItem from './ListItem';
 import { useState } from 'react';
-import Colours from '../constants/Colours';
+import Colours from '../styles/Colours';
 
 const ListToggle: React.FC<{
   label: string;

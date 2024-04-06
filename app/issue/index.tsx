@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ListSelectItem from '../../components/ListSelectItem';
 import { useState } from 'react';
-import Colours from '../../constants/Colours';
+import Colours from '../../styles/Colours';
 
 type ListSelectItemData = {
   id: string;

@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import { useState } from 'react';
-import Colours from '../constants/Colours';
+import Colours from '../styles/Colours';
 
 const ListItem: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;

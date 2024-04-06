@@ -1,7 +1,7 @@
 import ListItem from './ListItem';
 import { GestureResponderEvent, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Colours from '../constants/Colours';
+import Colours from '../styles/Colours';
 
 const ListDrillIn: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
