@@ -8,11 +8,12 @@ const ListDrillIn: React.FC<{
   onPress?: null | ((event: GestureResponderEvent) => void) | undefined;
   label: string;
   rounding?: Rounding;
+  currentValue: string;
 }> = props => {
   return (
     <ListItem {...props}>
       <View style={styles.currentValueContainer}>
-        <Text style={styles.currentValueText}>Todo: Selected Item</Text>
+        <Text style={styles.currentValueText}>{props.currentValue}</Text>
         <Ionicons
           name="chevron-forward"
           size={16}
