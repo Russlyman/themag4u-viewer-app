@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import { Library } from '../types/Library';
+import { Library } from '../helpers/LibraryHelpers';
 
 type LibraryAction = {
   type: LibraryActionType;

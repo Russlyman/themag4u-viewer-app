@@ -18,41 +18,9 @@ import {
 } from '../helpers/SettingsHelpers';
 import { SettingsProvider } from '../context/SettingsContext';
 import { LibraryProvider } from '../context/LibraryContext';
-import { Library } from '../types/Library';
-
-export const TESTING_DATA: Library = {
-  area: {
-    '0': {
-      name: 'Coventry East',
-    },
-    '1': {
-      name: 'Coventry West',
-    },
-  },
-  issue: {
-    '0': {
-      name: 'February 2024',
-      pdfs: {
-        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-      },
-    },
-    '1': {
-      name: 'March 2024',
-      pdfs: {
-        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-      },
-    },
-    '2': {
-      name: 'April 2024',
-      pdfs: {
-        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-      },
-    },
-  },
-};
+import { getNetworkStateAsync } from 'expo-network';
+import { LIBRARY_STORAGE_KEY, Library } from '../helpers/LibraryHelpers';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -61,6 +29,31 @@ export default function Layout() {
     Inter_600SemiBold,
     Inter_700Bold,
   });
+
+  const [library, setLibrary] = useState<Library>();
+  useEffect(() => {
+    const prepareLibrary = async () => {
+      const net = await getNetworkStateAsync();
+      if (net.isInternetReachable) {
+        const request = await fetch('http://192.168.4.10/library.json');
+        if (request.ok) {
+          const requestText = await request.text();
+          await storeData(LIBRARY_STORAGE_KEY, requestText);
+
+          const requestJson: Library = JSON.parse(requestText);
+          setLibrary(requestJson);
+          return;
+        }
+      }
+
+      const localLibrary = await getData(LIBRARY_STORAGE_KEY);
+      if (localLibrary) {
+        const localLibraryJson: Library = JSON.parse(localLibrary);
+        setLibrary(localLibraryJson);
+      }
+    };
+    prepareLibrary();
+  }, []);
 
   // Grab settings from device or use defaults.
   const [settings, setSettings] = useState<Settings>();
@@ -80,18 +73,18 @@ export default function Layout() {
 
   // Only show app once everything has loaded.
   useEffect(() => {
-    if ((fontsLoaded || fontError) && settings) {
+    if ((fontsLoaded || fontError) && settings && library) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, fontError, settings]);
+  }, [fontsLoaded, fontError, settings, library]);
 
   // Don't render until everything has loaded.
-  if ((!fontsLoaded && !fontError) || !settings) {
+  if ((!fontsLoaded && !fontError) || !settings || !library) {
     return null;
   }
 
   return (
-    <LibraryProvider library={TESTING_DATA}>
+    <LibraryProvider library={library}>
       <SettingsProvider
         settings={settings}
         onStateChange={async state => {
