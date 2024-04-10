@@ -2,13 +2,15 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ListSelectItem from '../../components/ListSelectItem';
 import Colours from '../../styles/Colours';
 import { SettingsSet, useSettingsContext } from '../../context/SettingsContext';
-import { TESTING_DATA } from '../issue';
 import { shouldRound } from '../../helpers/RoundingHelpers';
+import { useLibraryContext } from '../../context/LibraryContext';
 
 const AreaIndex = () => {
   const { state, dispatch } = useSettingsContext();
+  const { state: libraryState, dispatch: libraryDispatch } =
+    useLibraryContext();
 
-  const areaList = Object.entries(TESTING_DATA.area).map(([areaId, area]) => ({
+  const areaList = Object.entries(libraryState.area).map(([areaId, area]) => ({
     areaId,
     name: area.name,
   }));

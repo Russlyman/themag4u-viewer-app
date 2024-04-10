@@ -7,10 +7,12 @@ import {
   SettingsToggle,
   useSettingsContext,
 } from '../../context/SettingsContext';
-import { TESTING_DATA } from '../issue';
+import { useLibraryContext } from '../../context/LibraryContext';
 
 const SettingsIndex = () => {
   const { state, dispatch } = useSettingsContext();
+  const { state: libraryState, dispatch: libraryDispatch } =
+    useLibraryContext();
 
   return (
     <ScrollView
@@ -20,13 +22,13 @@ const SettingsIndex = () => {
       <View style={styles.topContainer}>
         <ListDrillIn
           label="Area"
-          currentValue={TESTING_DATA.area[state.areaId].name}
+          currentValue={libraryState.area[state.areaId].name}
           onPress={() => router.navigate('/area')}
           rounding={Rounding.Top}
         />
         <ListDrillIn
           label="Issue"
-          currentValue={TESTING_DATA.issue[state.issueId].name}
+          currentValue={libraryState.issue[state.issueId].name}
           onPress={() => router.navigate('/issue')}
           rounding={Rounding.Bottom}
         />

@@ -17,7 +17,42 @@ import {
   defaultSettings,
 } from '../helpers/SettingsHelpers';
 import { SettingsProvider } from '../context/SettingsContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LibraryProvider } from '../context/LibraryContext';
+import { Library } from '../types/Library';
+
+export const TESTING_DATA: Library = {
+  area: {
+    '0': {
+      name: 'Coventry East',
+    },
+    '1': {
+      name: 'Coventry West',
+    },
+  },
+  issue: {
+    '0': {
+      name: 'February 2024',
+      pdfs: {
+        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      },
+    },
+    '1': {
+      name: 'March 2024',
+      pdfs: {
+        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      },
+    },
+    '2': {
+      name: 'April 2024',
+      pdfs: {
+        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      },
+    },
+  },
+};
 
 SplashScreen.preventAutoHideAsync();
 
@@ -56,24 +91,26 @@ export default function Layout() {
   }
 
   return (
-    <SettingsProvider
-      settings={settings}
-      onStateChange={async state => {
-        await storeData(SETTINGS_STORAGE_KEY, JSON.stringify(state));
-      }}
-    >
-      <SafeAreaProvider>
-        <StatusBar
-          style="dark"
-          animated={true}
-        />
-        <Stack
-          screenOptions={{
-            header: Header,
-            contentStyle: { backgroundColor: Colours.background },
-          }}
-        />
-      </SafeAreaProvider>
-    </SettingsProvider>
+    <LibraryProvider library={TESTING_DATA}>
+      <SettingsProvider
+        settings={settings}
+        onStateChange={async state => {
+          await storeData(SETTINGS_STORAGE_KEY, JSON.stringify(state));
+        }}
+      >
+        <SafeAreaProvider>
+          <StatusBar
+            style="dark"
+            animated={true}
+          />
+          <Stack
+            screenOptions={{
+              header: Header,
+              contentStyle: { backgroundColor: Colours.background },
+            }}
+          />
+        </SafeAreaProvider>
+      </SettingsProvider>
+    </LibraryProvider>
   );
 }

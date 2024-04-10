@@ -59,13 +59,13 @@ export const settingsReducer = (state: Settings, action: SettingsAction) => {
     case SettingsSet.IssueId:
       return { ...state, issueId: action.payload };
     case SettingsToggle.Swipe:
-      return { ...state, swipe: !state.enableSwipe };
+      return { ...state, enableSwipe: !state.enableSwipe };
     case SettingsToggle.LeftHand:
-      return { ...state, leftHand: !state.enableLeftHand };
+      return { ...state, enableLeftHand: !state.enableLeftHand };
     case SettingsToggle.Notifications:
-      return { ...state, notification: !state.enableNotifications };
+      return { ...state, enableNotifications: !state.enableNotifications };
     case SettingsToggle.Vibrate:
-      return { ...state, vibrate: !state.enableVibrate };
+      return { ...state, enableVibrate: !state.enableVibrate };
     default:
       return state;
   }

@@ -3,46 +3,14 @@ import ListSelectItem from '../../components/ListSelectItem';
 import Colours from '../../styles/Colours';
 import { SettingsSet, useSettingsContext } from '../../context/SettingsContext';
 import { shouldRound } from '../../helpers/RoundingHelpers';
-import { Library } from '../../types/Library';
-
-export const TESTING_DATA: Library = {
-  area: {
-    '0': {
-      name: 'Coventry East',
-    },
-    '1': {
-      name: 'Coventry West',
-    },
-  },
-  issue: {
-    '0': {
-      name: 'February 2024',
-      pdfs: {
-        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-      },
-    },
-    '1': {
-      name: 'March 2024',
-      pdfs: {
-        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-      },
-    },
-    '2': {
-      name: 'April 2024',
-      pdfs: {
-        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-      },
-    },
-  },
-};
+import { useLibraryContext } from '../../context/LibraryContext';
 
 const IssueIndex = () => {
   const { state, dispatch } = useSettingsContext();
+  const { state: libraryState, dispatch: libraryDispatch } =
+    useLibraryContext();
 
-  const issueList = Object.entries(TESTING_DATA.issue)
+  const issueList = Object.entries(libraryState.issue)
     .filter(([issueId, issue]) => issue.pdfs[state.areaId])
     .map(([issueId, issue]) => ({ issueId, name: issue.name }));
 
