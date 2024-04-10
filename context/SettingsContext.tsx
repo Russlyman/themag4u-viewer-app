@@ -1,27 +1,39 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import { defaultSettings } from '../helpers/SettingsHelpers';
-import { SettingsType } from '../helpers/SettingsHelpers';
+import { Settings } from '../helpers/SettingsHelpers';
 
-type ActionType = {
-  type: Action;
+type SettingsToggleAction = {
+  type: SettingsToggle;
 };
 
-export enum Action {
-  ToggleSwipe,
-  ToggleLeftHand,
-  ToggleNotification,
-  ToggleVibrate,
+export enum SettingsToggle {
+  Swipe = 2,
+  LeftHand = 3,
+  Notification = 4,
+  Vibrate = 5,
 }
 
+type SettingsSetAction = {
+  type: SettingsSet;
+  payload: string;
+};
+
+export enum SettingsSet {
+  AreaId = 0,
+  IssueId = 1,
+}
+
+type SettingsAction = SettingsToggleAction | SettingsSetAction;
+
 const SettingsContext = createContext<{
-  state: SettingsType;
-  dispatch: React.Dispatch<ActionType>;
-}>({ state: defaultSettings, dispatch: {} as React.Dispatch<ActionType> }); // type gymnastics - fuck you.
+  state: Settings;
+  dispatch: React.Dispatch<SettingsAction>;
+}>({ state: defaultSettings, dispatch: {} as React.Dispatch<SettingsAction> }); // type gymnastics - fuck you.
 
 export const SettingsProvider: React.FC<{
   children: React.ReactNode;
-  settings: SettingsType;
-  onStateChange: (state: SettingsType) => void;
+  settings: Settings;
+  onStateChange: (state: Settings) => void;
 }> = props => {
   const [state, dispatch] = useReducer(settingsReducer, props.settings);
 
@@ -40,16 +52,20 @@ export const useSettingsContext = () => {
   return useContext(SettingsContext);
 };
 
-export const settingsReducer = (state: SettingsType, action: ActionType) => {
+export const settingsReducer = (state: Settings, action: SettingsAction) => {
   switch (action.type) {
-    case Action.ToggleSwipe:
+    case SettingsToggle.Swipe:
       return { ...state, swipe: !state.swipe };
-    case Action.ToggleLeftHand:
+    case SettingsToggle.LeftHand:
       return { ...state, leftHand: !state.leftHand };
-    case Action.ToggleNotification:
+    case SettingsToggle.Notification:
       return { ...state, notification: !state.notification };
-    case Action.ToggleVibrate:
+    case SettingsToggle.Vibrate:
       return { ...state, vibrate: !state.vibrate };
+    case SettingsSet.AreaId:
+      return { ...state, areaId: action.payload };
+    case SettingsSet.IssueId:
+      return { ...state, issueId: action.payload };
     default:
       return state;
   }

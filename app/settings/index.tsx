@@ -3,7 +3,11 @@ import ListDrillIn from '../../components/ListDrillIn';
 import { router } from 'expo-router';
 import ListToggle from '../../components/ListToggle';
 import { Rounding } from '../../components/ListItem';
-import { Action, useSettingsContext } from '../../context/SettingsContext';
+import {
+  SettingsToggle,
+  useSettingsContext,
+} from '../../context/SettingsContext';
+import { TESTING_DATA } from '../issue';
 
 const SettingsIndex = () => {
   const { state, dispatch } = useSettingsContext();
@@ -16,13 +20,13 @@ const SettingsIndex = () => {
       <View style={styles.topContainer}>
         <ListDrillIn
           label="Area"
-          currentValue="Todo: Value From Context"
+          currentValue={TESTING_DATA.area[state.area].name}
           onPress={() => router.navigate('/area')}
           rounding={Rounding.Top}
         />
         <ListDrillIn
           label="Issue"
-          currentValue="Todo: Value From Context"
+          currentValue={TESTING_DATA.issue[state.issue].name}
           onPress={() => router.navigate('/issue')}
           rounding={Rounding.Bottom}
         />
@@ -32,28 +36,28 @@ const SettingsIndex = () => {
           label="Swipe to Change Page"
           value={state.swipe}
           onValueChange={() => {
-            dispatch({ type: Action.ToggleSwipe });
+            dispatch({ type: SettingsToggle.Swipe });
           }}
         />
         <ListToggle
           label="Left Hand Mode"
           value={state.leftHand}
           onValueChange={() => {
-            dispatch({ type: Action.ToggleLeftHand });
+            dispatch({ type: SettingsToggle.LeftHand });
           }}
         />
         <ListToggle
           label="Notifications for New Issues"
           value={state.notification}
           onValueChange={() => {
-            dispatch({ type: Action.ToggleNotification });
+            dispatch({ type: SettingsToggle.Notification });
           }}
         />
         <ListToggle
           label="Vibrate on Page Change"
           value={state.vibrate}
           onValueChange={() => {
-            dispatch({ type: Action.ToggleVibrate });
+            dispatch({ type: SettingsToggle.Vibrate });
           }}
         />
       </View>

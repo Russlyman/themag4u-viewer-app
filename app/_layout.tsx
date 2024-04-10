@@ -11,12 +11,13 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import Colours from '../styles/Colours';
 import { getData, storeData } from '../helpers/StorageHelpers';
-import { SettingsType } from '../helpers/SettingsHelpers';
+import { Settings } from '../helpers/SettingsHelpers';
 import {
   SETTINGS_STORAGE_KEY,
   defaultSettings,
 } from '../helpers/SettingsHelpers';
 import { SettingsProvider } from '../context/SettingsContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,9 +28,10 @@ export default function Layout() {
   });
 
   // Grab settings from device or use defaults.
-  const [settings, setSettings] = useState<SettingsType>();
+  const [settings, setSettings] = useState<Settings>();
   useEffect(() => {
     const prepareSettings = async () => {
+      // await AsyncStorage.clear();
       const settingsRaw = await getData(SETTINGS_STORAGE_KEY);
       if (settingsRaw) {
         setSettings(JSON.parse(settingsRaw));

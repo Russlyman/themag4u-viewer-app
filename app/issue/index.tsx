@@ -1,54 +1,67 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ListSelectItem from '../../components/ListSelectItem';
-import { useState } from 'react';
 import Colours from '../../styles/Colours';
-import { Rounding } from '../../components/ListItem';
+import { SettingsSet, useSettingsContext } from '../../context/SettingsContext';
+import { shouldRound } from '../../helpers/RoundingHelpers';
+import { Library } from '../../types/Library';
 
-type ListSelectItemData = {
-  id: string;
-  name: string;
+export const TESTING_DATA: Library = {
+  area: {
+    '0': {
+      name: 'Coventry East',
+    },
+    '1': {
+      name: 'Coventry West',
+    },
+  },
+  issue: {
+    '0': {
+      name: 'February 2024',
+      pdfs: {
+        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      },
+    },
+    '1': {
+      name: 'March 2024',
+      pdfs: {
+        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      },
+    },
+    '2': {
+      name: 'April 2024',
+      pdfs: {
+        '0': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        '1': 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      },
+    },
+  },
 };
 
 const IssueIndex = () => {
-  const DATA: ListSelectItemData[] = [
-    { id: '0', name: 'February 2024' },
-    { id: '1', name: 'February 2024' },
-    { id: '2', name: 'February 2024' },
-  ];
+  const { state, dispatch } = useSettingsContext();
 
-  const issueListLength = DATA.length;
-
-  const [selectedId, setSelectedId] = useState<string>('0');
+  const issueList = Object.entries(TESTING_DATA.issue)
+    .filter(([issueId, issue]) => issue.pdfs[state.areaId])
+    .map(([issueId, issue]) => ({ issueId, name: issue.name }));
 
   const renderItem = ({
     item,
     index,
   }: {
-    item: ListSelectItemData;
+    item: { issueId: string; name: string };
     index: number;
   }) => {
-    let rounding: Rounding | undefined;
-
-    if (index !== 0 && issueListLength > 2) {
-      // First Item
-      if (index === 1) {
-        rounding = Rounding.Top;
-      }
-      // Last Item
-      else if (index === issueListLength - 1) {
-        rounding = Rounding.Bottom;
-      }
-      // Middle Items
-      else {
-        rounding = Rounding.None;
-      }
-    }
+    const rounding = shouldRound(index, issueList.length);
 
     const component = (
       <ListSelectItem
         label={item.name}
-        isSelected={item.id === selectedId}
-        onPress={() => setSelectedId(item.id)}
+        isSelected={item.issueId === state.issueId}
+        onPress={() =>
+          dispatch({ type: SettingsSet.IssueId, payload: item.issueId })
+        }
         rounding={rounding}
       />
     );
@@ -72,10 +85,10 @@ const IssueIndex = () => {
     <FlatList
       contentContainerStyle={styles.itemList}
       alwaysBounceVertical={false}
-      data={DATA}
+      data={issueList}
       renderItem={renderItem}
-      keyExtractor={item => item.id}
-      extraData={selectedId}
+      keyExtractor={item => item.issueId}
+      extraData={state.issueId}
     />
   );
 };
