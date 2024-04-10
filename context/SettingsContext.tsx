@@ -16,7 +16,7 @@ export enum Action {
 const SettingsContext = createContext<{
   state: SettingsType;
   dispatch: React.Dispatch<ActionType>;
-}>({ state: defaultSettings, dispatch: {} as React.Dispatch<ActionType> });
+}>({ state: defaultSettings, dispatch: {} as React.Dispatch<ActionType> }); // type gymnastics - fuck you.
 
 export const SettingsProvider: React.FC<{
   children: React.ReactNode;
