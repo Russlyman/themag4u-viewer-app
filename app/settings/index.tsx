@@ -20,13 +20,13 @@ const SettingsIndex = () => {
       <View style={styles.topContainer}>
         <ListDrillIn
           label="Area"
-          currentValue={TESTING_DATA.area[state.area].name}
+          currentValue={TESTING_DATA.area[state.areaId].name}
           onPress={() => router.navigate('/area')}
           rounding={Rounding.Top}
         />
         <ListDrillIn
           label="Issue"
-          currentValue={TESTING_DATA.issue[state.issue].name}
+          currentValue={TESTING_DATA.issue[state.issueId].name}
           onPress={() => router.navigate('/issue')}
           rounding={Rounding.Bottom}
         />
@@ -34,28 +34,28 @@ const SettingsIndex = () => {
       <View style={styles.bottomContainer}>
         <ListToggle
           label="Swipe to Change Page"
-          value={state.swipe}
+          value={state.enableSwipe}
           onValueChange={() => {
             dispatch({ type: SettingsToggle.Swipe });
           }}
         />
         <ListToggle
           label="Left Hand Mode"
-          value={state.leftHand}
+          value={state.enableLeftHand}
           onValueChange={() => {
             dispatch({ type: SettingsToggle.LeftHand });
           }}
         />
         <ListToggle
           label="Notifications for New Issues"
-          value={state.notification}
+          value={state.enableNotifications}
           onValueChange={() => {
-            dispatch({ type: SettingsToggle.Notification });
+            dispatch({ type: SettingsToggle.Notifications });
           }}
         />
         <ListToggle
           label="Vibrate on Page Change"
-          value={state.vibrate}
+          value={state.enableVibrate}
           onValueChange={() => {
             dispatch({ type: SettingsToggle.Vibrate });
           }}

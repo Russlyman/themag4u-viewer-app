@@ -9,7 +9,7 @@ type SettingsToggleAction = {
 export enum SettingsToggle {
   Swipe = 2,
   LeftHand = 3,
-  Notification = 4,
+  Notifications = 4,
   Vibrate = 5,
 }
 
@@ -54,18 +54,18 @@ export const useSettingsContext = () => {
 
 export const settingsReducer = (state: Settings, action: SettingsAction) => {
   switch (action.type) {
-    case SettingsToggle.Swipe:
-      return { ...state, swipe: !state.swipe };
-    case SettingsToggle.LeftHand:
-      return { ...state, leftHand: !state.leftHand };
-    case SettingsToggle.Notification:
-      return { ...state, notification: !state.notification };
-    case SettingsToggle.Vibrate:
-      return { ...state, vibrate: !state.vibrate };
     case SettingsSet.AreaId:
       return { ...state, areaId: action.payload };
     case SettingsSet.IssueId:
       return { ...state, issueId: action.payload };
+    case SettingsToggle.Swipe:
+      return { ...state, swipe: !state.enableSwipe };
+    case SettingsToggle.LeftHand:
+      return { ...state, leftHand: !state.enableLeftHand };
+    case SettingsToggle.Notifications:
+      return { ...state, notification: !state.enableNotifications };
+    case SettingsToggle.Vibrate:
+      return { ...state, vibrate: !state.enableVibrate };
     default:
       return state;
   }
