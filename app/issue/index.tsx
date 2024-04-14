@@ -1,16 +1,16 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ListSelectItem from '../../components/ListSelectItem';
 import Colours from '../../styles/Colours';
-import { SettingsSet, useSettingsContext } from '../../context/SettingsContext';
 import { shouldRound } from '../../helpers/RoundingHelpers';
-import { useLibraryContext } from '../../context/LibraryContext';
+import {
+  LibraryActionType,
+  useLibraryContext,
+} from '../../context/LibraryContext';
 
 const IssueIndex = () => {
-  const { state, dispatch } = useSettingsContext();
-  const { state: libraryState, dispatch: libraryDispatch } =
-    useLibraryContext();
+  const { state, dispatch } = useLibraryContext();
 
-  const issueList = Object.entries(libraryState.issue)
+  const issueList = Object.entries(state.library.issue)
     .filter(([issueId, issue]) => issue.pdfs[state.areaId])
     .map(([issueId, issue]) => ({ issueId, name: issue.name }));
 
@@ -28,7 +28,10 @@ const IssueIndex = () => {
         label={item.name}
         isSelected={item.issueId === state.issueId}
         onPress={() =>
-          dispatch({ type: SettingsSet.IssueId, payload: item.issueId })
+          dispatch({
+            type: LibraryActionType.SetIssueId,
+            payload: item.issueId,
+          })
         }
         rounding={rounding}
       />

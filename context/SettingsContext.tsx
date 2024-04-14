@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import { defaultSettings } from '../helpers/SettingsHelpers';
 import { Settings } from '../helpers/SettingsHelpers';
 
-type SettingsToggleAction = {
+type SettingsAction = {
   type: SettingsToggle;
 };
 
@@ -12,18 +12,6 @@ export enum SettingsToggle {
   Notifications = 4,
   Vibrate = 5,
 }
-
-type SettingsSetAction = {
-  type: SettingsSet;
-  payload: string;
-};
-
-export enum SettingsSet {
-  AreaId = 0,
-  IssueId = 1,
-}
-
-type SettingsAction = SettingsToggleAction | SettingsSetAction;
 
 const SettingsContext = createContext<{
   state: Settings;
@@ -54,10 +42,6 @@ export const useSettingsContext = () => {
 
 export const settingsReducer = (state: Settings, action: SettingsAction) => {
   switch (action.type) {
-    case SettingsSet.AreaId:
-      return { ...state, areaId: action.payload };
-    case SettingsSet.IssueId:
-      return { ...state, issueId: action.payload };
     case SettingsToggle.Swipe:
       return { ...state, enableSwipe: !state.enableSwipe };
     case SettingsToggle.LeftHand:

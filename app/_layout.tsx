@@ -18,9 +18,7 @@ import {
 } from '../helpers/SettingsHelpers';
 import { SettingsProvider } from '../context/SettingsContext';
 import { LibraryProvider } from '../context/LibraryContext';
-import { getNetworkStateAsync } from 'expo-network';
-import { LIBRARY_STORAGE_KEY, Library } from '../helpers/LibraryHelpers';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Library, getLibrary } from '../helpers/LibraryHelpers';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,42 +28,30 @@ export default function Layout() {
     Inter_700Bold,
   });
 
-  const [library, setLibrary] = useState<Library>();
+  const [libraryState, setLibraryState] = useState<Library>();
   useEffect(() => {
     const prepareLibrary = async () => {
-      const net = await getNetworkStateAsync();
-      if (net.isInternetReachable) {
-        const request = await fetch('http://192.168.4.10/library.json');
-        if (request.ok) {
-          const requestText = await request.text();
-          await storeData(LIBRARY_STORAGE_KEY, requestText);
-
-          const requestJson: Library = JSON.parse(requestText);
-          setLibrary(requestJson);
-          return;
-        }
+      const libraryObject = await getLibrary();
+      if (!libraryObject) {
+        return;
       }
 
-      const localLibrary = await getData(LIBRARY_STORAGE_KEY);
-      if (localLibrary) {
-        const localLibraryJson: Library = JSON.parse(localLibrary);
-        setLibrary(localLibraryJson);
-      }
+      const { library, location } = libraryObject;
+      setLibraryState(library);
     };
     prepareLibrary();
   }, []);
 
   // Grab settings from device or use defaults.
-  const [settings, setSettings] = useState<Settings>();
+  const [settingsState, setSettingsState] = useState<Settings>();
   useEffect(() => {
     const prepareSettings = async () => {
-      // await AsyncStorage.clear();
       const settingsRaw = await getData(SETTINGS_STORAGE_KEY);
       if (settingsRaw) {
-        setSettings(JSON.parse(settingsRaw));
+        setSettingsState(JSON.parse(settingsRaw));
       } else {
         await storeData(SETTINGS_STORAGE_KEY, JSON.stringify(defaultSettings));
-        setSettings(defaultSettings);
+        setSettingsState(defaultSettings);
       }
     };
     prepareSettings();
@@ -73,20 +59,24 @@ export default function Layout() {
 
   // Only show app once everything has loaded.
   useEffect(() => {
-    if ((fontsLoaded || fontError) && settings && library) {
+    if ((fontsLoaded || fontError) && settingsState && libraryState) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, fontError, settings, library]);
+  }, [fontsLoaded, fontError, settingsState, libraryState]);
 
   // Don't render until everything has loaded.
-  if ((!fontsLoaded && !fontError) || !settings || !library) {
+  if ((!fontsLoaded && !fontError) || !settingsState || !libraryState) {
     return null;
   }
 
   return (
-    <LibraryProvider library={library}>
+    <LibraryProvider
+      library={libraryState}
+      areaId={'0'}
+      issueId={'0'}
+    >
       <SettingsProvider
-        settings={settings}
+        settings={settingsState}
         onStateChange={async state => {
           await storeData(SETTINGS_STORAGE_KEY, JSON.stringify(state));
         }}

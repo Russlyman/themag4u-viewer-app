@@ -22,13 +22,13 @@ const SettingsIndex = () => {
       <View style={styles.topContainer}>
         <ListDrillIn
           label="Area"
-          currentValue={libraryState.area[state.areaId].name}
+          currentValue={libraryState.library.area[libraryState.areaId].name}
           onPress={() => router.navigate('/area')}
           rounding={Rounding.Top}
         />
         <ListDrillIn
           label="Issue"
-          currentValue={libraryState.issue[state.issueId].name}
+          currentValue={libraryState.library.issue[libraryState.issueId].name}
           onPress={() => router.navigate('/issue')}
           rounding={Rounding.Bottom}
         />

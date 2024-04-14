@@ -1,16 +1,16 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ListSelectItem from '../../components/ListSelectItem';
 import Colours from '../../styles/Colours';
-import { SettingsSet, useSettingsContext } from '../../context/SettingsContext';
 import { shouldRound } from '../../helpers/RoundingHelpers';
-import { useLibraryContext } from '../../context/LibraryContext';
+import {
+  LibraryActionType,
+  useLibraryContext,
+} from '../../context/LibraryContext';
 
 const AreaIndex = () => {
-  const { state, dispatch } = useSettingsContext();
-  const { state: libraryState, dispatch: libraryDispatch } =
-    useLibraryContext();
+  const { state, dispatch } = useLibraryContext();
 
-  const areaList = Object.entries(libraryState.area).map(([areaId, area]) => ({
+  const areaList = Object.entries(state.library.area).map(([areaId, area]) => ({
     areaId,
     name: area.name,
   }));
@@ -29,7 +29,7 @@ const AreaIndex = () => {
         label={item.name}
         isSelected={item.areaId === state.areaId}
         onPress={() =>
-          dispatch({ type: SettingsSet.AreaId, payload: item.areaId })
+          dispatch({ type: LibraryActionType.SetAreaId, payload: item.areaId })
         }
         rounding={rounding}
       />
