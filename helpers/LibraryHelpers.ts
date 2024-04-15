@@ -22,7 +22,7 @@ export type LibraryCurrentSelection = {
   issueId: string;
 };
 
-export enum LibraryLocation {
+export enum LibrarySource {
   Online,
   Local,
 }
@@ -40,14 +40,14 @@ export const getLibrary = async () => {
       await storeData(LIBRARY_STORAGE_KEY, requestText);
 
       const requestJson: Library = JSON.parse(requestText);
-      return { library: requestJson, location: LibraryLocation.Online };
+      return { library: requestJson, source: LibrarySource.Online };
     }
   }
 
   const localLibrary = await getData(LIBRARY_STORAGE_KEY);
   if (localLibrary) {
     const localLibraryJson: Library = JSON.parse(localLibrary);
-    return { library: localLibraryJson, location: LibraryLocation.Local };
+    return { library: localLibraryJson, source: LibrarySource.Local };
   }
 };
 
@@ -59,4 +59,13 @@ export const selectionChangeHandler = async (
     LIBRARY_SELECTION_STORAGE_KEY,
     JSON.stringify(currentSelection)
   );
+};
+
+export const getCurrentSelection = async () => {
+  const selectionRaw = await getData(LIBRARY_SELECTION_STORAGE_KEY);
+  if (selectionRaw) {
+    return JSON.parse(selectionRaw);
+  } else {
+    return { areaId: '0', issueId: '0' };
+  }
 };

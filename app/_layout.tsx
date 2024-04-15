@@ -7,6 +7,8 @@ import {
   LIBRARY_SELECTION_STORAGE_KEY,
   Library,
   LibraryCurrentSelection,
+  LibrarySource,
+  getCurrentSelection,
   getLibrary,
   selectionChangeHandler,
 } from '../helpers/LibraryHelpers';
@@ -34,41 +36,21 @@ export default function Layout() {
     Inter_700Bold,
   });
 
+  const [settingsState, setSettingsState] = useState<Settings>();
   const [selectionState, setSelectionState] =
     useState<LibraryCurrentSelection>();
-  useEffect(() => {
-    const prepareCurrentSelection = async () => {
-      const selectionRaw = await getData(LIBRARY_SELECTION_STORAGE_KEY);
-      if (selectionRaw) {
-        setSelectionState(JSON.parse(selectionRaw));
-      } else {
-        setSelectionState({ areaId: '0', issueId: '0' });
-      }
-    };
-    prepareCurrentSelection();
-  }, []);
+  const [libraryState, setLibraryState] = useState<{
+    library: Library;
+    source: LibrarySource;
+  }>();
 
-  const [libraryState, setLibraryState] = useState<Library>();
   useEffect(() => {
-    const prepareLibrary = async () => {
-      const libraryObject = await getLibrary();
-      if (!libraryObject) {
-        return;
-      }
-
-      const { library, location } = libraryObject;
-      setLibraryState(library);
-    };
-    prepareLibrary();
-  }, []);
-
-  // Grab settings from device or use defaults.
-  const [settingsState, setSettingsState] = useState<Settings>();
-  useEffect(() => {
-    const prepareSettings = async () => {
+    const prepareApp = async () => {
       setSettingsState(await getSettings());
+      setSelectionState(await getCurrentSelection());
+      setLibraryState(await getLibrary());
     };
-    prepareSettings();
+    prepareApp();
   }, []);
 
   // Only show app once everything has loaded.

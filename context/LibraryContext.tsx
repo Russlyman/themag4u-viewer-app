@@ -3,10 +3,12 @@ import {
   LIBRARY_AUTO_ASSIGN_ID,
   Library,
   LibraryCurrentSelection,
+  LibrarySource,
 } from '../helpers/LibraryHelpers';
 
 type LibraryState = {
   library: Library;
+  source: LibrarySource;
   currentSelection: LibraryCurrentSelection;
 };
 
@@ -30,12 +32,13 @@ const LibraryContext = createContext<{
 
 export const LibraryProvider: React.FC<{
   children: React.ReactNode;
-  library: Library;
+  library: { library: Library; source: LibrarySource };
   defaultSelection: LibraryCurrentSelection;
   onSelectionChange: (currentSelection: LibraryCurrentSelection) => void;
 }> = props => {
   const [state, dispatch] = useReducer(libraryReducer, {
-    library: props.library,
+    library: props.library.library,
+    source: props.library.source,
     currentSelection: props.defaultSelection,
   });
 
