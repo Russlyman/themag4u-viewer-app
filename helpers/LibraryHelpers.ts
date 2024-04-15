@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const LIBRARY_STORAGE_KEY = 'library';
 export const LIBRARY_SELECTION_STORAGE_KEY = 'currentSelection';
 
-export const LIBRARY_AUTO_ASSIGN_ID = '-1';
+export const LIBRARY_AUTO_ASSIGN_ID = '0';
 
 export type Library = {
   area: { [areaId: string]: { name: string } };

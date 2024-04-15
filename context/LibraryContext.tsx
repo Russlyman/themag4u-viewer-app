@@ -58,28 +58,16 @@ export const libraryReducer = (state: LibraryState, action: LibraryAction) => {
   switch (action.type) {
     case LibraryActionType.SetAreaId:
       // Change issue to latest if issue doesn't exist on newly selected area.
-      if (
-        !state.library.issue[state.currentSelection.issueId].pdfs[
-          action.payload
-        ]
-      ) {
-        return {
-          ...state,
-          currentSelection: {
-            ...state.currentSelection,
-            areaId: action.payload,
-            issueId: LIBRARY_AUTO_ASSIGN_ID,
-          },
-        };
-      } else {
-        return {
-          ...state,
-          currentSelection: {
-            ...state.currentSelection,
-            areaId: action.payload,
-          },
-        };
-      }
+      return {
+        ...state,
+        currentSelection: {
+          ...state.currentSelection,
+          areaId: action.payload,
+          ...(!state.library.issue[state.currentSelection.issueId].pdfs[
+            action.payload
+          ] && { issueId: LIBRARY_AUTO_ASSIGN_ID }),
+        },
+      };
     case LibraryActionType.SetIssueId:
       return {
         ...state,
