@@ -27,7 +27,7 @@ const AreaIndex = () => {
     const component = (
       <ListSelectItem
         label={item.name}
-        isSelected={item.areaId === state.areaId}
+        isSelected={item.areaId === state.currentSelection.areaId}
         onPress={() =>
           dispatch({ type: LibraryActionType.SetAreaId, payload: item.areaId })
         }
@@ -57,7 +57,7 @@ const AreaIndex = () => {
       data={areaList}
       renderItem={renderItem}
       keyExtractor={item => item.areaId}
-      extraData={state.areaId}
+      extraData={state.currentSelection.areaId}
     />
   );
 };

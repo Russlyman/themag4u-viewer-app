@@ -11,7 +11,7 @@ const IssueIndex = () => {
   const { state, dispatch } = useLibraryContext();
 
   const issueList = Object.entries(state.library.issue)
-    .filter(([issueId, issue]) => issue.pdfs[state.areaId])
+    .filter(([issueId, issue]) => issue.pdfs[state.currentSelection.areaId])
     .map(([issueId, issue]) => ({ issueId, name: issue.name }));
 
   const renderItem = ({
@@ -26,7 +26,7 @@ const IssueIndex = () => {
     const component = (
       <ListSelectItem
         label={item.name}
-        isSelected={item.issueId === state.issueId}
+        isSelected={item.issueId === state.currentSelection.issueId}
         onPress={() =>
           dispatch({
             type: LibraryActionType.SetIssueId,
@@ -59,7 +59,7 @@ const IssueIndex = () => {
       data={issueList}
       renderItem={renderItem}
       keyExtractor={item => item.issueId}
-      extraData={state.issueId}
+      extraData={state.currentSelection.issueId}
     />
   );
 };

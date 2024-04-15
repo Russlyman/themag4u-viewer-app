@@ -1,10 +1,13 @@
-import React, { createContext, useContext, useReducer } from 'react';
-import { Library } from '../helpers/LibraryHelpers';
+import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import {
+  LIBRARY_AUTO_ASSIGN_ID,
+  Library,
+  LibraryCurrentSelection,
+} from '../helpers/LibraryHelpers';
 
 type LibraryState = {
   library: Library;
-  areaId: string;
-  issueId: string;
+  currentSelection: LibraryCurrentSelection;
 };
 
 type LibraryAction = {
@@ -28,14 +31,17 @@ const LibraryContext = createContext<{
 export const LibraryProvider: React.FC<{
   children: React.ReactNode;
   library: Library;
-  areaId: string;
-  issueId: string;
+  defaultSelection: LibraryCurrentSelection;
+  onSelectionChange: (currentSelection: LibraryCurrentSelection) => void;
 }> = props => {
   const [state, dispatch] = useReducer(libraryReducer, {
     library: props.library,
-    areaId: props.areaId,
-    issueId: props.issueId,
+    currentSelection: props.defaultSelection,
   });
+
+  useEffect(() => {
+    props.onSelectionChange(state.currentSelection);
+  }, [state.currentSelection]);
 
   return (
     <LibraryContext.Provider value={{ state, dispatch }}>
@@ -51,13 +57,37 @@ export const useLibraryContext = () => {
 export const libraryReducer = (state: LibraryState, action: LibraryAction) => {
   switch (action.type) {
     case LibraryActionType.SetAreaId:
-      if (!state.library.issue[state.issueId].pdfs[action.payload]) {
-        return { ...state, areaId: action.payload, issueId: '0' };
+      // Change issue to latest if issue doesn't exist on newly selected area.
+      if (
+        !state.library.issue[state.currentSelection.issueId].pdfs[
+          action.payload
+        ]
+      ) {
+        return {
+          ...state,
+          currentSelection: {
+            ...state.currentSelection,
+            areaId: action.payload,
+            issueId: LIBRARY_AUTO_ASSIGN_ID,
+          },
+        };
       } else {
-        return { ...state, areaId: action.payload };
+        return {
+          ...state,
+          currentSelection: {
+            ...state.currentSelection,
+            areaId: action.payload,
+          },
+        };
       }
     case LibraryActionType.SetIssueId:
-      return { ...state, issueId: action.payload };
+      return {
+        ...state,
+        currentSelection: {
+          ...state.currentSelection,
+          issueId: action.payload,
+        },
+      };
     default:
       return state;
   }

@@ -1,24 +1,30 @@
-import { Stack } from 'expo-router';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Header from '../components/Header';
-import { SplashScreen } from 'expo-router';
-import { useEffect, useState } from 'react';
 import {
   useFonts,
   Inter_600SemiBold,
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
+import {
+  LIBRARY_SELECTION_STORAGE_KEY,
+  Library,
+  LibraryCurrentSelection,
+  getLibrary,
+  selectionChangeHandler,
+} from '../helpers/LibraryHelpers';
+import { Stack } from 'expo-router';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Header from '../components/Header';
+import { SplashScreen } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import Colours from '../styles/Colours';
-import { getData, storeData } from '../helpers/StorageHelpers';
-import { Settings } from '../helpers/SettingsHelpers';
+import { getData } from '../helpers/StorageHelpers';
 import {
-  SETTINGS_STORAGE_KEY,
-  defaultSettings,
+  Settings,
+  getSettings,
+  stateChangeHandler,
 } from '../helpers/SettingsHelpers';
 import { SettingsProvider } from '../context/SettingsContext';
 import { LibraryProvider } from '../context/LibraryContext';
-import { Library, getLibrary } from '../helpers/LibraryHelpers';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,6 +33,20 @@ export default function Layout() {
     Inter_600SemiBold,
     Inter_700Bold,
   });
+
+  const [selectionState, setSelectionState] =
+    useState<LibraryCurrentSelection>();
+  useEffect(() => {
+    const prepareCurrentSelection = async () => {
+      const selectionRaw = await getData(LIBRARY_SELECTION_STORAGE_KEY);
+      if (selectionRaw) {
+        setSelectionState(JSON.parse(selectionRaw));
+      } else {
+        setSelectionState({ areaId: '0', issueId: '0' });
+      }
+    };
+    prepareCurrentSelection();
+  }, []);
 
   const [libraryState, setLibraryState] = useState<Library>();
   useEffect(() => {
@@ -46,40 +66,42 @@ export default function Layout() {
   const [settingsState, setSettingsState] = useState<Settings>();
   useEffect(() => {
     const prepareSettings = async () => {
-      const settingsRaw = await getData(SETTINGS_STORAGE_KEY);
-      if (settingsRaw) {
-        setSettingsState(JSON.parse(settingsRaw));
-      } else {
-        await storeData(SETTINGS_STORAGE_KEY, JSON.stringify(defaultSettings));
-        setSettingsState(defaultSettings);
-      }
+      setSettingsState(await getSettings());
     };
     prepareSettings();
   }, []);
 
   // Only show app once everything has loaded.
   useEffect(() => {
-    if ((fontsLoaded || fontError) && settingsState && libraryState) {
+    if (
+      (fontsLoaded || fontError) &&
+      settingsState &&
+      libraryState &&
+      selectionState
+    ) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, fontError, settingsState, libraryState]);
+  }, [fontsLoaded, fontError, settingsState, libraryState, selectionState]);
 
   // Don't render until everything has loaded.
-  if ((!fontsLoaded && !fontError) || !settingsState || !libraryState) {
+  if (
+    (!fontsLoaded && !fontError) ||
+    !settingsState ||
+    !libraryState ||
+    !selectionState
+  ) {
     return null;
   }
 
   return (
     <LibraryProvider
       library={libraryState}
-      areaId={'0'}
-      issueId={'0'}
+      defaultSelection={selectionState}
+      onSelectionChange={selectionChangeHandler}
     >
       <SettingsProvider
         settings={settingsState}
-        onStateChange={async state => {
-          await storeData(SETTINGS_STORAGE_KEY, JSON.stringify(state));
-        }}
+        onStateChange={stateChangeHandler}
       >
         <SafeAreaProvider>
           <StatusBar

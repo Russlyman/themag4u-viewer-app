@@ -3,6 +3,9 @@ import { getData, storeData } from './StorageHelpers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const LIBRARY_STORAGE_KEY = 'library';
+export const LIBRARY_SELECTION_STORAGE_KEY = 'currentSelection';
+
+export const LIBRARY_AUTO_ASSIGN_ID = '-1';
 
 export type Library = {
   area: { [areaId: string]: { name: string } };
@@ -12,6 +15,11 @@ export type Library = {
       pdfs: { [areaId: string]: string };
     };
   };
+};
+
+export type LibraryCurrentSelection = {
+  areaId: string;
+  issueId: string;
 };
 
 export enum LibraryLocation {
@@ -41,4 +49,14 @@ export const getLibrary = async () => {
     const localLibraryJson: Library = JSON.parse(localLibrary);
     return { library: localLibraryJson, location: LibraryLocation.Local };
   }
+};
+
+// Handle library selection changes by writing them to the device.
+export const selectionChangeHandler = async (
+  currentSelection: LibraryCurrentSelection
+) => {
+  await storeData(
+    LIBRARY_SELECTION_STORAGE_KEY,
+    JSON.stringify(currentSelection)
+  );
 };
