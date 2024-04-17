@@ -3,23 +3,33 @@ import {
   LIBRARY_AUTO_ASSIGN_ID,
   Library,
   LibraryCurrentSelection,
-  LibrarySource,
 } from '../helpers/LibraryHelpers';
 
 type LibraryState = {
   library: Library;
-  source: LibrarySource;
+  useCache: boolean;
   currentSelection: LibraryCurrentSelection;
 };
 
-type LibraryAction = {
-  type: LibraryActionType;
+type LibrarySetStringAction = {
+  type: LibrarySetStringActionType;
   payload: string;
 };
 
-export enum LibraryActionType {
-  SetAreaId,
-  SetIssueId,
+type LibrarySetLibraryAction = {
+  type: LibrarySetLibraryActionType;
+  payload: { library: Library; useCache: boolean };
+};
+
+type LibraryAction = LibrarySetStringAction | LibrarySetLibraryAction;
+
+export enum LibrarySetStringActionType {
+  SetAreaId = 0,
+  SetIssueId = 1,
+}
+
+export enum LibrarySetLibraryActionType {
+  SetLibrary = 2,
 }
 
 const LibraryContext = createContext<{
@@ -32,15 +42,23 @@ const LibraryContext = createContext<{
 
 export const LibraryProvider: React.FC<{
   children: React.ReactNode;
-  library: { library: Library; source: LibrarySource };
+  library: { library: Library; useCache: boolean };
   defaultSelection: LibraryCurrentSelection;
   onSelectionChange: (currentSelection: LibraryCurrentSelection) => void;
 }> = props => {
   const [state, dispatch] = useReducer(libraryReducer, {
     library: props.library.library,
-    source: props.library.source,
+    useCache: props.library.useCache,
     currentSelection: props.defaultSelection,
   });
+
+  // This code feels dogshit but it works.
+  useEffect(() => {
+    dispatch({
+      type: LibrarySetLibraryActionType.SetLibrary,
+      payload: props.library,
+    });
+  }, [props.library]);
 
   useEffect(() => {
     props.onSelectionChange(state.currentSelection);
@@ -59,7 +77,7 @@ export const useLibraryContext = () => {
 
 export const libraryReducer = (state: LibraryState, action: LibraryAction) => {
   switch (action.type) {
-    case LibraryActionType.SetAreaId:
+    case LibrarySetStringActionType.SetAreaId:
       // Change issue to latest if issue doesn't exist on newly selected area.
       return {
         ...state,
@@ -71,13 +89,19 @@ export const libraryReducer = (state: LibraryState, action: LibraryAction) => {
           ] && { issueId: LIBRARY_AUTO_ASSIGN_ID }),
         },
       };
-    case LibraryActionType.SetIssueId:
+    case LibrarySetStringActionType.SetIssueId:
       return {
         ...state,
         currentSelection: {
           ...state.currentSelection,
           issueId: action.payload,
         },
+      };
+    case LibrarySetLibraryActionType.SetLibrary:
+      return {
+        ...state,
+        library: action.payload.library,
+        useCache: action.payload.useCache,
       };
     default:
       return state;

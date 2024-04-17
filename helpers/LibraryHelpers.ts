@@ -22,32 +22,26 @@ export type LibraryCurrentSelection = {
   issueId: string;
 };
 
-export enum LibrarySource {
-  Online,
-  Local,
-}
-
 // Downloads, stores and returns the latest library or if offline then the locally stored version will be fetched and returned.
 // Will return undefined if neither are available.
-export const getLibrary = async () => {
-  const net = await getNetworkStateAsync();
-  if (net.isInternetReachable) {
-    const request = await fetch('http://192.168.4.10/library.json', {
-      cache: 'no-store',
-    });
-    if (request.ok) {
-      const requestText = await request.text();
-      await storeData(LIBRARY_STORAGE_KEY, requestText);
+export const getOnlineLibrary = async () => {
+  const request = await fetch('http://192.168.4.10/library.json', {
+    cache: 'no-store',
+  });
+  if (request.ok) {
+    const requestText = await request.text();
+    await storeData(LIBRARY_STORAGE_KEY, requestText);
 
-      const requestJson: Library = JSON.parse(requestText);
-      return { library: requestJson, source: LibrarySource.Online };
-    }
+    const requestJson: Library = JSON.parse(requestText);
+    return requestJson;
   }
+};
 
+export const getLocalLibrary = async () => {
   const localLibrary = await getData(LIBRARY_STORAGE_KEY);
   if (localLibrary) {
     const localLibraryJson: Library = JSON.parse(localLibrary);
-    return { library: localLibraryJson, source: LibrarySource.Local };
+    return localLibraryJson;
   }
 };
 

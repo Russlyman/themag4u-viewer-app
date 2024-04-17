@@ -3,7 +3,7 @@ import ListSelectItem from '../../components/ListSelectItem';
 import Colours from '../../styles/Colours';
 import { shouldRound } from '../../helpers/RoundingHelpers';
 import {
-  LibraryActionType,
+  LibrarySetStringActionType,
   useLibraryContext,
 } from '../../context/LibraryContext';
 
@@ -29,7 +29,7 @@ const IssueIndex = () => {
         isSelected={item.issueId === state.currentSelection.issueId}
         onPress={() =>
           dispatch({
-            type: LibraryActionType.SetIssueId,
+            type: LibrarySetStringActionType.SetIssueId,
             payload: item.issueId,
           })
         }

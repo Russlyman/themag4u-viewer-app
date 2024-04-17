@@ -7,9 +7,9 @@ import {
   LIBRARY_SELECTION_STORAGE_KEY,
   Library,
   LibraryCurrentSelection,
-  LibrarySource,
   getCurrentSelection,
-  getLibrary,
+  getLocalLibrary,
+  getOnlineLibrary,
   selectionChangeHandler,
 } from '../helpers/LibraryHelpers';
 import { Stack } from 'expo-router';
@@ -27,6 +27,7 @@ import {
 } from '../helpers/SettingsHelpers';
 import { SettingsProvider } from '../context/SettingsContext';
 import { LibraryProvider } from '../context/LibraryContext';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,19 +37,63 @@ export default function Layout() {
     Inter_700Bold,
   });
 
+  const { isInternetReachable } = useNetInfo();
+  const [libraryState, setLibraryState] = useState<{
+    library: Library;
+    useCache: boolean;
+  }>();
+
+  useEffect(() => {
+    const prepareLibrary = async () => {
+      if (isInternetReachable === null) {
+        return;
+      }
+
+      // For Online
+      if (isInternetReachable) {
+        // State: Online
+        const onlineLibrary = await getOnlineLibrary();
+        if (onlineLibrary) {
+          setLibraryState({
+            library: onlineLibrary,
+            useCache: false,
+          });
+          return;
+        }
+      }
+
+      // For Local
+      if (libraryState) {
+        // State: Online -> Offline
+        setLibraryState(prev => {
+          if (prev) {
+            return { ...prev, useCache: true };
+          }
+        });
+      } else {
+        // State: Offline
+        const localLibrary = await getLocalLibrary();
+        if (!localLibrary) {
+          return;
+        }
+
+        setLibraryState({
+          library: localLibrary,
+          useCache: true,
+        });
+      }
+    };
+    prepareLibrary();
+  }, [isInternetReachable]);
+
   const [settingsState, setSettingsState] = useState<Settings>();
   const [selectionState, setSelectionState] =
     useState<LibraryCurrentSelection>();
-  const [libraryState, setLibraryState] = useState<{
-    library: Library;
-    source: LibrarySource;
-  }>();
 
   useEffect(() => {
     const prepareApp = async () => {
       setSettingsState(await getSettings());
       setSelectionState(await getCurrentSelection());
-      setLibraryState(await getLibrary());
     };
     prepareApp();
   }, []);

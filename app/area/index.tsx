@@ -3,7 +3,7 @@ import ListSelectItem from '../../components/ListSelectItem';
 import Colours from '../../styles/Colours';
 import { shouldRound } from '../../helpers/RoundingHelpers';
 import {
-  LibraryActionType,
+  LibrarySetStringActionType,
   useLibraryContext,
 } from '../../context/LibraryContext';
 
@@ -29,7 +29,10 @@ const AreaIndex = () => {
         label={item.name}
         isSelected={item.areaId === state.currentSelection.areaId}
         onPress={() =>
-          dispatch({ type: LibraryActionType.SetAreaId, payload: item.areaId })
+          dispatch({
+            type: LibrarySetStringActionType.SetAreaId,
+            payload: item.areaId,
+          })
         }
         rounding={rounding}
       />

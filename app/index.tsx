@@ -1,10 +1,12 @@
 import { Stack } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Footer from '../components/Footer';
+import { useLibraryContext } from '../context/LibraryContext';
 
 const Index = () => {
   const insets = useSafeAreaInsets();
+  const { state, dispatch } = useLibraryContext();
 
   return (
     <View
