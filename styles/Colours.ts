@@ -7,4 +7,5 @@ export default {
   controlDarkDepressed: '#4D5154',
   controlCurrentValue: '#ADB5BD',
   toggle: '#74C0FC',
+  error: '#F03E3E',
 };

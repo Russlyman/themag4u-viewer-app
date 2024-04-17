@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   noConnectionText: {
     paddingLeft: 0,
-    color: '#f03e3e',
+    color: Colours.error,
     paddingBottom: 12,
     textAlign: 'center',
   },
