@@ -40,6 +40,12 @@ const IssueIndex = () => {
     if (index === 0) {
       return (
         <View style={styles.tippedItemContainer}>
+          {state.useCache && (
+            <Text style={[styles.tipText, styles.noConnectionText]}>
+              Connect to the Internet to view Issues and Areas that are not
+              downloaded to your device.
+            </Text>
+          )}
           {component}
           <Text style={styles.tipText}>
             Selecting Latest will show the most recent issue of TheMag4U or
@@ -71,6 +77,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_600SemiBold',
     fontSize: 11.11,
     lineHeight: 11.11 + 11.11 * 0.4,
+  },
+  noConnectionText: {
+    paddingLeft: 0,
+    color: '#f03e3e',
+    paddingBottom: 12,
+    textAlign: 'center',
   },
   tippedItemContainer: { rowGap: 8, paddingBottom: 31 },
   itemList: { padding: 24, rowGap: 1 },
