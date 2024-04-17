@@ -8,6 +8,7 @@ const ListSelectItem: React.FC<{
   label: string;
   isSelected: boolean;
   rounding?: Rounding;
+  disabled: boolean;
 }> = props => {
   return (
     <ListItem {...props}>

@@ -13,6 +13,7 @@ const ListItem: React.FC<{
   label: string;
   children?: React.ReactNode;
   rounding?: Rounding;
+  disabled?: boolean;
 }> = props => {
   const [depressed, setDepressed] = useState(false);
 
@@ -45,7 +46,9 @@ const ListItem: React.FC<{
         props.rounding === undefined && styles.roundingAll,
       ]}
     >
-      <Text style={styles.labelText}>{props.label}</Text>
+      <Text style={[styles.labelText, props.disabled && styles.disabledText]}>
+        {props.label}
+      </Text>
       {props.children}
     </Pressable>
   );
@@ -75,6 +78,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_600SemiBold',
     fontSize: 16,
     lineHeight: 16 + 16 * 0.6,
+  },
+  disabledText: {
+    color: Colours.controlCurrentValue,
   },
 });
 

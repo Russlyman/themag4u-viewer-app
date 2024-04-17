@@ -35,24 +35,27 @@ const AreaIndex = () => {
           })
         }
         rounding={rounding}
+        disabled={false}
       />
     );
 
     if (index === 0) {
       return (
-        <View style={styles.tippedItemContainer}>
+        <>
           {state.useCache && (
             <Text style={[styles.tipText, styles.noConnectionText]}>
               Connect to the Internet to view Issues and Areas that are not
               downloaded to your device.
             </Text>
           )}
-          {component}
-          <Text style={styles.tipText}>
-            Selecting Closest will use the nearest distribution area to your
-            current location or you can manually choose.
-          </Text>
-        </View>
+          <View style={styles.tippedItemContainer}>
+            {component}
+            <Text style={styles.tipText}>
+              Selecting Closest will use the nearest distribution area to your
+              current location or you can manually choose.
+            </Text>
+          </View>
+        </>
       );
     }
 
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
   noConnectionText: {
     paddingLeft: 0,
     color: Colours.error,
-    paddingBottom: 12,
+    paddingBottom: 24,
     textAlign: 'center',
   },
   tippedItemContainer: { rowGap: 8, paddingBottom: 31 },

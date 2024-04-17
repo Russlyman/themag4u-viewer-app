@@ -12,46 +12,65 @@ const IssueIndex = () => {
 
   const issueList = Object.entries(state.library.issue)
     .filter(([issueId, issue]) => issue.pdfs[state.currentSelection.areaId])
-    .map(([issueId, issue]) => ({ issueId, name: issue.name }));
+    .map(([issueId, issue]) => ({
+      issueId,
+      name: issue.name,
+      cached: state.useCache ? false : true,
+    }));
 
   const renderItem = ({
     item,
     index,
   }: {
-    item: { issueId: string; name: string };
+    item: { issueId: string; name: string; cached: boolean };
     index: number;
   }) => {
     const rounding = shouldRound(index, issueList.length);
 
-    const component = (
-      <ListSelectItem
-        label={item.name}
-        isSelected={item.issueId === state.currentSelection.issueId}
-        onPress={() =>
-          dispatch({
-            type: LibrarySetStringActionType.SetIssueId,
-            payload: item.issueId,
-          })
-        }
-        rounding={rounding}
-      />
-    );
+    let component;
+    if (item.cached) {
+      component = (
+        <ListSelectItem
+          label={item.name}
+          isSelected={item.issueId === state.currentSelection.issueId}
+          onPress={() =>
+            dispatch({
+              type: LibrarySetStringActionType.SetIssueId,
+              payload: item.issueId,
+            })
+          }
+          rounding={rounding}
+          disabled={false}
+        />
+      );
+    } else {
+      component = (
+        <ListSelectItem
+          label={item.name}
+          isSelected={false}
+          rounding={rounding}
+          disabled={true}
+        />
+      );
+    }
 
     if (index === 0) {
       return (
-        <View style={styles.tippedItemContainer}>
+        <>
           {state.useCache && (
             <Text style={[styles.tipText, styles.noConnectionText]}>
               Connect to the Internet to view Issues and Areas that are not
               downloaded to your device.
             </Text>
           )}
-          {component}
-          <Text style={styles.tipText}>
-            Selecting Latest will show the most recent issue of TheMag4U or
-            older issues can be selected.
-          </Text>
-        </View>
+          <View style={styles.tippedItemContainer}>
+            {component}
+            <Text style={styles.tipText}>
+              Selecting Latest will show the most recent issue of TheMag4U or
+              older issues can be selected.
+            </Text>
+          </View>
+        </>
       );
     }
 
@@ -81,7 +100,7 @@ const styles = StyleSheet.create({
   noConnectionText: {
     paddingLeft: 0,
     color: Colours.error,
-    paddingBottom: 12,
+    paddingBottom: 24,
     textAlign: 'center',
   },
   tippedItemContainer: { rowGap: 8, paddingBottom: 31 },
