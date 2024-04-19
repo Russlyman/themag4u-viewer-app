@@ -37,6 +37,16 @@ export const getOnlineLibrary = async () => {
   }
 };
 
+// Gets the current selected area and issue ids stored on the device.
+export const getCurrentSelection = async () => {
+  const selectionRaw = await getData(LIBRARY_SELECTION_STORAGE_KEY);
+  if (selectionRaw) {
+    return JSON.parse(selectionRaw);
+  } else {
+    return { areaId: '0', issueId: '0' };
+  }
+};
+
 export const getLocalLibrary = async () => {
   const localLibrary = await getData(LIBRARY_STORAGE_KEY);
   if (localLibrary) {
@@ -53,13 +63,4 @@ export const selectionChangeHandler = async (
     LIBRARY_SELECTION_STORAGE_KEY,
     JSON.stringify(currentSelection)
   );
-};
-
-export const getCurrentSelection = async () => {
-  const selectionRaw = await getData(LIBRARY_SELECTION_STORAGE_KEY);
-  if (selectionRaw) {
-    return JSON.parse(selectionRaw);
-  } else {
-    return { areaId: '0', issueId: '0' };
-  }
 };

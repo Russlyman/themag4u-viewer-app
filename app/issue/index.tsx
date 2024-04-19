@@ -15,7 +15,10 @@ const IssueIndex = () => {
     .map(([issueId, issue]) => ({
       issueId,
       name: issue.name,
-      cached: state.useCache ? false : true,
+      cached: state.useCache
+        ? state.cache[state.currentSelection.areaId] &&
+          state.cache[state.currentSelection.areaId].includes(issueId)
+        : true,
     }));
 
   const renderItem = ({

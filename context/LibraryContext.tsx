@@ -9,6 +9,7 @@ type LibraryState = {
   library: Library;
   useCache: boolean;
   currentSelection: LibraryCurrentSelection;
+  cache: { [issueId: string]: string[] };
 };
 
 type LibrarySetStringAction = {
@@ -50,6 +51,7 @@ export const LibraryProvider: React.FC<{
     library: props.library.library,
     useCache: props.library.useCache,
     currentSelection: props.defaultSelection,
+    cache: { '0': ['0'] },
   });
 
   // This code feels dogshit but it works.

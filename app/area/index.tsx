@@ -13,31 +13,44 @@ const AreaIndex = () => {
   const areaList = Object.entries(state.library.area).map(([areaId, area]) => ({
     areaId,
     name: area.name,
+    cached: state.useCache ? Boolean(state.cache[areaId]) : true,
   }));
 
   const renderItem = ({
     item,
     index,
   }: {
-    item: { areaId: string; name: string };
+    item: { areaId: string; name: string; cached: boolean };
     index: number;
   }) => {
     const rounding = shouldRound(index, areaList.length);
 
-    const component = (
-      <ListSelectItem
-        label={item.name}
-        isSelected={item.areaId === state.currentSelection.areaId}
-        onPress={() =>
-          dispatch({
-            type: LibrarySetStringActionType.SetAreaId,
-            payload: item.areaId,
-          })
-        }
-        rounding={rounding}
-        disabled={false}
-      />
-    );
+    let component;
+    if (item.cached) {
+      component = (
+        <ListSelectItem
+          label={item.name}
+          isSelected={item.areaId === state.currentSelection.areaId}
+          onPress={() =>
+            dispatch({
+              type: LibrarySetStringActionType.SetAreaId,
+              payload: item.areaId,
+            })
+          }
+          rounding={rounding}
+          disabled={false}
+        />
+      );
+    } else {
+      component = (
+        <ListSelectItem
+          label={item.name}
+          isSelected={false}
+          rounding={rounding}
+          disabled={true}
+        />
+      );
+    }
 
     if (index === 0) {
       return (
